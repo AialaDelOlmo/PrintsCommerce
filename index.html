@@ -11,14 +11,14 @@
         <header>
             <h3>PrintsCommerce</h3>
             <button class="cart">Carro (0)</button>
-            <div class="cart-content">
+            <div class="cart-content" v-show="cartOpen">
                 <div class="cart-content__product">
-                    <img src="" alt="" />
-                    <span>Producto1 - $500</span>
+                    <img v-bind:src="product.images[0].image" :alt="product.name.toUpperCase()" />
+                    <span>{{ product.name }} - {{ new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(product.price) }} </span>
                 </div>
                 <div class="cart-content__product">
-                    <img src="" alt="" />
-                    <span>Producto2 - $200</span>
+                    <img v-bind:src="product.images[1].image" :alt="product.name" />
+                    <span>{{ product.name }} - {{ new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(product.price) }} </span>
                 </div>
             </div>
         </header>
@@ -26,19 +26,22 @@
         <main>
             <section class="product">
                 <div class="product__thumbnails">
-                    <div class="thumb"></div>
-                    <div class="thumb"></div>
+                    <div class="thumb" :class="{ active: activeImage === 0 }" :style="{ backgroundImage: `url(` + product.images[0].thumbnail + `)` }"></div>
+                    <div class="thumb" :class="{ active: activeImage === 1 }" :style="{ backgroundImage: `url(` + product.images[1].thumbnail + `)` }"></div>
                 </div>
                 <div class="product__image">
                     <img src="" alt="" />
                 </div>
             </section>
             <section class="description">
-                <h4>Producto</h4>
-                <span class="badge new">Nuevo</span>
-                <span class="badge offer">Oferta</span>
-                <p class="description__status"></p>
-                <p class="description__price">$500</p>
+                <h4>{{ product.name.toUpperCase() }} {{ product.stock === 0? "😢": "😃" }} </h4>
+                <span class="badge new" v-if="product.new">Nuevo</span>
+                <span class="badge offer" v-if="product.offer">Oferta</span>
+                <p class="description__status" v-if="product.stock === 3 || product.stock === 2">Quedan pocas unidades</p>
+                <p class="description__status" v-else-if="product.stock === 1">¡Solo queda una unidad!</p>
+                <p class="description__status" v-else></p>
+               
+                <p class="description__price">{{ new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(product.price) }}</p>
                 <p class="description__content">Lorem ipsum dolor sit amet consectetur adipisicing elit.
                     Soluta assumenda error quae totam corporis voluptatem sed veniam ipsa. Perferendis
                     fugiat ea repudiandae dolorum repellat et hic provident placeat, qui animi?
@@ -47,6 +50,7 @@
                     <span>Código de Descuento:</span>
                     <input type="text" placeholder="Ingresa tu código" />
                 </div>
+                <button :disabled="product.stock == 0"> Agregar al carrito</button>
             </section>
         </main>
     </div>
@@ -55,7 +59,33 @@
     <script>
         const { createApp } = Vue;
 
-        const app = createApp();
+        const app = createApp({
+            data() {
+                return {
+                    cart: [],
+                    product: {
+                        name: "Olive rainbow",
+                        price: 35,
+                        stock: 2,
+                        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit Soluta assumenda error quae totam corporis voluptatem sed veniam ipsa.",
+                        images: [
+                            {
+                                image: "./images/oliveRainbow1.jpg",
+                                thumbnail: "./images/oliveRainbow1_thumb.jpg"
+                            },
+                            {
+                                image: "./images/oliveRainbow2.jpg",
+                                thumbnail: "./images/oliveRainbow2_thumb.jpg"
+                            }
+                        ],
+                        new: true,
+                        offer: false
+                    },
+                    activeImage: 0,
+                    cartOpen: false,
+                };
+            }
+        });
         app.mount("#app");
 
     </script>
