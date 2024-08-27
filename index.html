@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrintsCommerce</title>
+    <link rel="stylesheet" href="./styles.css"/>
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h3>PrintsCommerce</h3>
+            <button class="cart">Carron</button>
+            <div class="cart-contents">
+                <div class="cart-content__product">
+                    <img src="" alt="">
+                    <span>Producto - $500</span>
+                </div>
+            </div>
+        </header>
+        
+        <main>
+            <section class="product">
+                <div class="product__thumbnails">
+                    <div class="thumb"></div>
+                    <div class="thumb"></div>
+                </div>
+                <div class="producto__image">
+                    <img src="" alt="">
+                </div>
+            </section>
+            <section class="description">
+                <h4>Producto</h4>
+                <span class="badgeNew">Nuevo</span>
+                <span class="badgeOffer">Oferta</span>
+                <p class="description__status"></p>
+                <p class="description__price">$500</p>
+                <p class="description__content">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Soluta assumenda error quae totam corporis voluptatem sed veniam ipsa. Perferendis
+                    fugiat ea repudiandae dolorum repellat et hic provident placeat, qui animi?
+                </p>
+                <div class="discount">
+                    <span>Código de Descuento:</span>
+                    <input type="text" placeholder="Ingresa tu código" />
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const { createApp } = Vue;
+        
+        const app = createApp();
+        app.mount("#app");
+
+    </script>
+</body>
+</html>
