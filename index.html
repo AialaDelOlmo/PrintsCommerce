@@ -10,11 +10,15 @@
     <div id="app">
         <header>
             <h3>PrintsCommerce</h3>
-            <button class="cart">Carron</button>
-            <div class="cart-contents">
+            <button class="cart">Carro (0)</button>
+            <div class="cart-content">
                 <div class="cart-content__product">
-                    <img src="" alt="">
-                    <span>Producto - $500</span>
+                    <img src="" alt="" />
+                    <span>Producto1 - $500</span>
+                </div>
+                <div class="cart-content__product">
+                    <img src="" alt="" />
+                    <span>Producto2 - $200</span>
                 </div>
             </div>
         </header>
@@ -25,14 +29,14 @@
                     <div class="thumb"></div>
                     <div class="thumb"></div>
                 </div>
-                <div class="producto__image">
-                    <img src="" alt="">
+                <div class="product__image">
+                    <img src="" alt="" />
                 </div>
             </section>
             <section class="description">
                 <h4>Producto</h4>
-                <span class="badgeNew">Nuevo</span>
-                <span class="badgeOffer">Oferta</span>
+                <span class="badge new">Nuevo</span>
+                <span class="badge offer">Oferta</span>
                 <p class="description__status"></p>
                 <p class="description__price">$500</p>
                 <p class="description__content">Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -50,7 +54,7 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script>
         const { createApp } = Vue;
-        
+
         const app = createApp();
         app.mount("#app");
 
