@@ -60,12 +60,13 @@
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script>
-        const { createApp, ref } = Vue;
+        const { createApp, ref, reactive, toRefs } = Vue;
 
         const app = createApp({
             setup() {
-                const product = ref({
-                    name: "Olive rainbow",
+                const productState = reactive({
+                    product: {
+                        name: "Olive rainbow",
                         price: 35,
                         stock: 8,
                         description: "Lorem ipsum dolor sit amet consectetur adipisicing elit Soluta assumenda error quae totam corporis voluptatem sed veniam ipsa.",
@@ -82,40 +83,43 @@
                         new: true,
                         offer: false,
                         quantity: 1
+                    },
+                    activeImage:0
                 });
-                const cart = ref([]);
-                const cartOpen = ref(false);
-                const activeImage = ref(0);
+                
+                const cartState = reactive ({
+                    cart: [],
+                    cartOpen: false
+                });
+
                 const discountCodes = ref(["NEW20", "20OFF", "20DISCOUNT"]);
 
                 function applyDiscount(event) {
                     const discountCodeIndex = discountCodes.value.indexOf(event.target.value);
                     if (discountCodeIndex >= 0) {
-                        product.value.price *= 80/100;
+                        productState.product.price *= 80/100;
                         discountCodes.value.splice(discountCodeIndex, 1);
                     }
                 }
 
                 function addToCart() {
-                    const prodIndex = cart.value.findIndex(prod => prod.name === product.value.name);
+                    const prodIndex = cartState.cart.findIndex(prod => prod.name === productState.product.name);
                     if (prodIndex >= 0) {
-                        cart.value[prodIndex].quantity++;
+                        cartState.cart[prodIndex].quantity++;
                     } else {
-                        cart.value.push(product.value);
+                        cartState.cart.push(productState.product);
                     }
-                    product.value.stock--;
+                    productState.product.stock--;
                 }
 
                 setTimeout(() =>{
-                    activeImage.value = 1
+                    productState.activeImage = 1
                 }, 2000);
                  
                 return {
-                    product,
-                    cart,
-                    cartOpen,
-                    activeImage,
-
+                    ...toRefs(productState),
+                    ...toRefs(cartState),
+                   
                     applyDiscount,
                     addToCart
                 };
