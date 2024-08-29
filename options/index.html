@@ -18,43 +18,8 @@
                 </div>
             </div>
         </header>
-        
         <main>
-            <section class="product">
-                <div class="product__thumbnails">
-                    <div class="thumb" 
-                        v-for="(image, index) in product.images"
-                        :key="image.thumbnail" 
-                        :class="{ active: activeImage === index }" 
-                        :style="{ backgroundImage: `url(` + image.thumbnail + `)` }"
-                        @click="activeImage = index">
-                    </div>
-                       
-                    </div>
-                <div class="product__image">
-                    <img :src="product.images[activeImage].image" :alt="product.name" />
-                </div>
-            </section>
-            <section class="description">
-                <h4>{{ product.name.toUpperCase() }} {{ product.stock === 0? "😢": "😃" }} </h4>
-                <span class="badge new" v-if="product.new">Nuevo</span>
-                <span class="badge offer" v-if="product.offer">Oferta</span>
-                <p class="description__status" v-if="product.stock === 3 || product.stock === 2">Quedan pocas unidades</p>
-                <p class="description__status" v-else-if="product.stock === 1">¡Solo queda una unidad!</p>
-                <p class="description__status" v-else-if="product.stock === 0">Sin stock</p>
-                <p class="description__status" v-else></p>
-               
-                <p class="description__price">{{ new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(product.price) }}</p>
-                <p class="description__content">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Soluta assumenda error quae totam corporis voluptatem sed veniam ipsa. Perferendis
-                    fugiat ea repudiandae dolorum repellat et hic provident placeat, qui animi?
-                </p>
-                <div class="discount">
-                    <span>Código de Descuento:</span>
-                    <input type="text" placeholder="Ingresa tu código" @keyup.enter="applyDiscount($event)" />
-                </div>
-                <button :disabled="product.stock == 0" @click="addToCart()"> Agregar al carrito</button>
-            </section>
+            <product v-for="product in products" :key="product.name" :product="product"></product>
         </main>
     </div>
 
@@ -65,29 +30,68 @@
         const app = createApp({
             data() {
                 return {
+                    products: [{
+                    name: "Olive rainbow",
+                    price: 35,
+                    stock: 7,
+                    description: "Lorem ipsum dolor sit amet consectetur adipisicing elit Soluta assumenda error quae totam corporis voluptatem sed veniam ipsa.",
+                    images: [
+                        {
+                            image: "./images/oliveRainbow1.jpg",
+                            thumbnail: "./images/oliveRainbow1_thumb.jpg"
+                        },
+                        {
+                            image: "./images/oliveRainbow2.jpg",
+                            thumbnail: "./images/oliveRainbow2_thumb.jpg"
+                        }
+                    ],
+                    new: true,
+                    offer: false,
+                    quantity: 1
+                },
+                {
+                    name: "Blue sea",
+                    price: 25,
+                    stock: 2,
+                    description: "Lorem ipsum dolor sit amet consectetur adipisicing elit Soluta assumenda error quae totam corporis voluptatem sed veniam ipsa.",
+                    images: [
+                        {
+                            image: "./images/oliveRainbow1.jpg",
+                            thumbnail: "./images/oliveRainbow1_thumb.jpg"
+                        },
+                        {
+                            image: "./images/oliveRainbow2.jpg",
+                            thumbnail: "./images/oliveRainbow2_thumb.jpg"
+                        }
+                    ],
+                    new: true,
+                    offer: false,
+                    quantity: 1
+                },
+                {
+                    name: "Yellow abstract",
+                    price: 45,
+                    stock: 17,
+                    description: "Lorem ipsum dolor sit amet consectetur adipisicing elit Soluta assumenda error quae totam corporis voluptatem sed veniam ipsa.",
+                    images: [
+                        {
+                            image: "./images/oliveRainbow1.jpg",
+                            thumbnail: "./images/oliveRainbow1_thumb.jpg"
+                        },
+                        {
+                            image: "./images/oliveRainbow2.jpg",
+                            thumbnail: "./images/oliveRainbow2_thumb.jpg"
+                        }
+                    ],
+                    new: true,
+                    offer: false,
+                    quantity: 1
+                }],
+
                     cart: [],
-                    product: {
-                        name: "Olive rainbow",
-                        price: 35,
-                        stock: 7,
-                        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit Soluta assumenda error quae totam corporis voluptatem sed veniam ipsa.",
-                        images: [
-                            {
-                                image: "./images/oliveRainbow1.jpg",
-                                thumbnail: "./images/oliveRainbow1_thumb.jpg"
-                            },
-                            {
-                                image: "./images/oliveRainbow2.jpg",
-                                thumbnail: "./images/oliveRainbow2_thumb.jpg"
-                            }
-                        ],
-                        new: true,
-                        offer: false,
-                        quantity: 1
-                    },
-                    activeImage: 0,
+                  
                     cartOpen: false,
-                    discountCodes: ["NEW20", "20OFF", "20DISCOUNT"],
+                   
                     cart: [
                         {
                             name: "Blue rainbow",
@@ -145,27 +149,13 @@
                     ]
                 };
             },
-            methods: {
-                applyDiscount(event) {
-                    const discountCodeIndex = this.discountCodes.indexOf(event.target.value);
-                    if (discountCodeIndex >= 0) {
-                        this.product.price *= 80/100
-                        this.discountCodes.splice(discountCodeIndex, 1);
-                    }
-                },
-                addToCart() {
-                    const prodIndex = this.cart.findIndex(prod => prod.name === this.product.name);
-                    if (prodIndex >= 0) {
-                        this.cart[prodIndex].quantity++;
-                    } else {
-                        this.cart.push(this.product);
-                    }
-                    this.product.stock--;
-                }
-            }
+            methods: {}
         });
-        app.mount("#app");
+    </script>
 
+    <script src="./Product.js"></script>
+    <script>
+        app.mount("#app"); 
     </script>
 </body>
 </html>
