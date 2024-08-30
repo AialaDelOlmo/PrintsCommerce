@@ -19,7 +19,7 @@
             </div>
         </header>
         <main>
-            <product v-for="product in products" :key="product.name" :product="product"></product>
+            <product v-for="product in products" :key="product.name" :product="product" @sendtocart="addToCart($event)"></product>
         </main>
     </div>
 
@@ -149,7 +149,17 @@
                     ]
                 };
             },
-            methods: {}
+            methods: {
+                addToCart(product) {
+                    const prodIndex = this.cart.findIndex(prod => prod.name === product.name);
+                    if (prodIndex >= 0) {
+                        this.cart[prodIndex].quantity++;
+                    } else {
+                        this.cart.push(product);
+                    }
+                    product.stock--;
+                }
+            }
         });
     </script>
 

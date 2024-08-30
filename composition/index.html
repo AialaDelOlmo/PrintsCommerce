@@ -20,7 +20,7 @@
         </header>
         
         <main>
-            <product v-for="product in products" :key="product.name" :product="product"></product>
+            <product v-for="product in products" :key="product.name" :product="product" @sendtocart="addToCart($event)"></product>
         </main>
     </div>
 
@@ -95,10 +95,21 @@
                     cartOpen: false
                 });
 
+                function addToCart(product) {
+                    const prodIndex = cartState.cart.findIndex(prod => prod.name === product.name);
+                    if (prodIndex >= 0) {
+                        cartState.cart[prodIndex].quantity++;
+                    } else {
+                        cartState.cart.push(product);
+                    }
+                    product.stock--;
+                }
+
                 return {
                     ...toRefs(cartState),
 
-                    products
+                    products,
+                    addToCart
                 };
             }
         });
