@@ -42,10 +42,32 @@ app.component("product", {
 
         const productState = reactive({
             activeImage: 0,
-            description_color: "rgb(129, 129, 129)"
+        //    description_color: "rgb(129, 129, 129)"
+            description_color: computed(() => {
+                if (props.product.stock == 3 || props.product.stock == 2 ){
+                    return "rgb(200, 100, 20)";
+                } else if (props.product.stock == 1) {
+                    return "rgb(200, 30, 30)";
+                } else if (props.product.stock == 0) {
+                    return "rgb(129, 129, 129)";
+                }
+                return "rgb(129, 129, 129)";
+            })
         });
 
         const discountCodes = ref(["NEW20", "20OFF", "20DISCOUNT"]);
+
+       /* Se ha definido directamente en el reactive
+       const description_color = computed(() => {
+            if (props.product.stock == 3 || props.product.stock == 2 ){
+                return "rgb(200, 100, 20)";
+            } else if (props.product.stock == 1) {
+                return "rgb(200, 30, 30)";
+            } else if (props.product.stock == 0) {
+                return "rgb(129, 129, 129)";
+            }
+            return "rgb(129, 129, 129)";
+        }); */
 
         function sendToCart() {
             context.emit("sendtocart", props.product);
@@ -73,7 +95,7 @@ app.component("product", {
             console.log(val, oldValue);
         })
 
-        watch(() => props.product.stock, (stock) => {
+     /*   watch(() => props.product.stock, (stock) => {
             if (stock == 3 || stock == 2 ){
                 productState.description_color = "rgb(200, 100, 20)";
             } else if (stock == 1) {
@@ -81,7 +103,9 @@ app.component("product", {
             } else if (stock == 0) {
                 productState.description_color = "rgb(129, 129, 129)";
             }
-        })
+        }) */
+
+        
 
         setTimeout(() =>{
             props.activeImage = 1
@@ -92,7 +116,8 @@ app.component("product", {
                    
             applyDiscount,
             addToCart,
-            sendToCart
+            sendToCart,
+          //  description_color
         };
     }
 })

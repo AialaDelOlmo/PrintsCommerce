@@ -41,7 +41,7 @@ app.component("product", {
         return {
             activeImage: 0,
             discountCodes: ["NEW20", "20OFF", "20DISCOUNT"],
-            price_color: "rgb(104, 104, 209)"
+            //price_color: "rgb(104, 104, 209)"
         }
     },
     methods: {
@@ -61,7 +61,7 @@ app.component("product", {
         activeImage(value, oldValue) {
             console.log("activeImage. value: " + value + " oldValue: " + oldValue);
         },
-        "product.stock"(stock) {
+      /*  "product.stock"(stock) {
             if (stock == 3){
                 this.price_color = "rgb(200, 100, 20)";
             } else if (stock == 2 || stock == 1) {
@@ -69,6 +69,18 @@ app.component("product", {
             } else if (stock == 0) {
                 this.price_color = "rgb(129, 129, 129)";
             }
+        }*/
+    },
+    computed: {
+        price_color() {
+            if (this.product.stock == 3){
+                return "rgb(200, 100, 20)";
+            } else if (this.product.stock == 2 || this.product.stock == 1) {
+                return "rgb(200, 30, 30)";
+            } else if (this.product.stock == 0) {
+                return "rgb(129, 129, 129)";
+            }
+            return "rgb(104, 104, 209)";
         }
-    }
+    } 
 })

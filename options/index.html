@@ -92,7 +92,7 @@
                     cart: [],
                   
                     cartOpen: false,
-                    total: 0,
+              //      total: 0,
                     
                     /*
                     cart: [
@@ -165,7 +165,7 @@
                 }
             },
             watch: {
-                cart: {
+             /*   cart: {
                     handler(cart) {
                         // Genera total mediante reduce
                         this.total = cart.reduce((prev, curr) => {
@@ -176,7 +176,24 @@
                     },
                     // Autorizar la búsqueda más profunda
                     deep: true
+                }*/
+            },
+
+            computed: {
+                total() {
+                    return this.cart.reduce((prev, curr) => {
+                        const prevPrice = prev.price || prev;
+                        const prevQuantity = prev.quantity || 1;
+                        return prevPrice * prevQuantity + curr.price * curr.quantity;
+                        }, 0);
                 }
+            },
+
+            beforeCreate() {
+                console.log("beforeCreate");
+            },
+            created() {
+                console.log("created");
             }
         });
     </script>

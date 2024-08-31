@@ -10,6 +10,13 @@
     <div id="app">
         <header>
             <h3>PrintsCommerce</h3>
+            <div class="product-search">
+                <input
+                  type="text"
+                  placeholder="Buscar producto..."
+                  v-model="filtro"
+                />
+              </div>
             <button class="cart" v-on:click="cartOpen = !cartOpen">Carro  ({{ cart.length }})</button>
             <div class="cart-content" v-show="cartOpen" >
                 <div class="cart-content__product" v-for="(product, index) in cart" :key="product.name" :class="{ 'bg-gray': index & 1 }" >
@@ -21,13 +28,13 @@
         </header>
         
         <main>
-            <product v-for="product in products" :key="product.name" :product="product" @sendtocart="addToCart($event)"></product>
+            <product v-for="product in filteredProducts" :key="product.name" :product="product" @sendtocart="addToCart($event)"></product>
         </main>
     </div>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script>
-        const { createApp, ref, reactive, toRefs, watch } = Vue;
+        const { createApp, ref, reactive, toRefs, watch, computed } = Vue;
 
         const app = createApp({
             setup() {
@@ -94,8 +101,36 @@
                 const cartState = reactive ({
                     cart: [],
                     cartOpen: false,
-                    total: 0
+                //    total: 0
+                    total: computed(() => {
+                    return cartState.cart.reduce((prev, curr) => {
+                        const prevPrice = prev.price || prev;
+                        const prevQuantity = prev.quantity || 1;
+                        return prevPrice * prevQuantity + curr.price * curr.quantity;
+                    }, 0);
+                    })
                 });
+
+                const filtro = ref("");
+
+                const filteredProducts = computed(() => {
+                    if (filtro.value != "") {
+                        return products.value.filter((product) =>
+                            product.name.toUpperCase().includes(filtro.value.toUpperCase())
+                        );
+                    }
+                    return products.value;
+                 });
+
+                /* Se crea en el reactive  
+                const total = computed(() => {
+                    return cartState.cart.reduce((prev, curr) => {
+                        const prevPrice = prev.price || prev;
+                        const prevQuantity = prev.quantity || 1;
+                        return prevPrice * prevQuantity + curr.price * curr.quantity;
+                    }, 0);
+                });
+                */
 
                 function addToCart(product) {
                     const prodIndex = cartState.cart.findIndex(prod => prod.name === product.name);
@@ -107,7 +142,7 @@
                     product.stock--;
                 }
 
-                watch(cartState.cart, (value, oldValue) => {
+              /*  watch(cartState.cart, (value, oldValue) => {
                     // Genera total mediante reduce
                     cartState.total = cartState.cart.reduce((prev, curr) => {
                         const prevPrice = prev.price || prev;
@@ -115,12 +150,15 @@
                         return prevPrice * prevQuantity + curr.price * curr.quantity;
                     }, 0);
                 });
-
+                */
                 return {
                     ...toRefs(cartState),
 
                     products,
-                    addToCart
+                    addToCart,
+                    filtro,
+                    filteredProducts
+                //   total
                 };
             }
         });
