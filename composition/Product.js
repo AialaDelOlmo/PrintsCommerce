@@ -18,10 +18,10 @@ app.component("product", {
         <section class="description">
             <h4>{{ product.name.toUpperCase() }} {{ product.stock === 0? "😢": "😃" }} </h4>
             <badge :product="product"></badge>
-            <p class="description__status" v-if="product.stock === 3 || product.stock === 2">Quedan pocas unidades</p>
-            <p class="description__status" v-else-if="product.stock === 1">¡Solo queda una unidad!</p>
-            <p class="description__status" v-else-if="product.stock === 0">Sin stock</p>
-            <p class="description__status" v-else></p>
+            <p class="description__status" :style="{ color: description_color }" v-if="product.stock === 3 || product.stock === 2">Quedan pocas unidades</p>
+            <p class="description__status" :style="{ color: description_color }" v-else-if="product.stock === 1">¡Solo queda una unidad!</p>
+            <p class="description__status" :style="{ color: description_color }" v-else-if="product.stock === 0">Sin stock</p>
+            <p class="description__status" :style="{ color: description_color }" v-else></p>
         
             <p class="description__price">{{ new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(product.price) }}</p>
             <p class="description__content">Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -41,7 +41,8 @@ app.component("product", {
     setup(props, context) {
 
         const productState = reactive({
-            activeImage: 0
+            activeImage: 0,
+            description_color: "rgb(129, 129, 129)"
         });
 
         const discountCodes = ref(["NEW20", "20OFF", "20DISCOUNT"]);
@@ -67,6 +68,20 @@ app.component("product", {
                 discountCodes.value.splice(discountCodeIndex, 1);
             }
         }
+
+        watch(() => productState.activeImage, (val, oldValue) =>{
+            console.log(val, oldValue);
+        })
+
+        watch(() => props.product.stock, (stock) => {
+            if (stock == 3 || stock == 2 ){
+                productState.description_color = "rgb(200, 100, 20)";
+            } else if (stock == 1) {
+                productState.description_color = "rgb(200, 30, 30)";
+            } else if (stock == 0) {
+                productState.description_color = "rgb(129, 129, 129)";
+            }
+        })
 
         setTimeout(() =>{
             props.activeImage = 1

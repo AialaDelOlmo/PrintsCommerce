@@ -20,9 +20,9 @@ app.component("product", {
                 <p class="description__status" v-if="product.stock === 3 || product.stock === 2">Quedan pocas unidades</p>
                 <p class="description__status" v-else-if="product.stock === 1">¡Solo queda una unidad!</p>
                 <p class="description__status" v-else-if="product.stock === 0">Sin stock</p>
-                <p class="description__status" v-else></p>
+                <p class="description__status" v-else ></p>
                
-                <p class="description__price">{{ new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(product.price) }}</p>
+                <p class="description__price" :style=" {color: price_color} ">{{ new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(product.price) }}</p>
                 <p class="description__content">Lorem ipsum dolor sit amet consectetur adipisicing elit.
                     Soluta assumenda error quae totam corporis voluptatem sed veniam ipsa. Perferendis
                     fugiat ea repudiandae dolorum repellat et hic provident placeat, qui animi?
@@ -40,7 +40,8 @@ app.component("product", {
     data(props) {
         return {
             activeImage: 0,
-            discountCodes: ["NEW20", "20OFF", "20DISCOUNT"]
+            discountCodes: ["NEW20", "20OFF", "20DISCOUNT"],
+            price_color: "rgb(104, 104, 209)"
         }
     },
     methods: {
@@ -55,5 +56,19 @@ app.component("product", {
             this.$emit("sendtocart", this.product);
         }
        
+    },
+    watch: {
+        activeImage(value, oldValue) {
+            console.log("activeImage. value: " + value + " oldValue: " + oldValue);
+        },
+        "product.stock"(stock) {
+            if (stock == 3){
+                this.price_color = "rgb(200, 100, 20)";
+            } else if (stock == 2 || stock == 1) {
+                this.price_color = "rgb(200, 30, 30)";
+            } else if (stock == 0) {
+                this.price_color = "rgb(129, 129, 129)";
+            }
+        }
     }
 })

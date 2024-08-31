@@ -85,7 +85,6 @@ body {
   main .description .description__status {
     font-size: 16px;
     font-weight: lighter;
-    color: rgb(129, 129, 129);
   }
   main .description .description__price {
     font-weight: bold;
